@@ -1,10 +1,31 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import Swal from 'sweetalert2'
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../store/AuthSlice';
+import { useNavigate } from 'react-router-dom';
 function Login() {
-
+    const dispatch = useDispatch()
+    const navigate = useNavigate();
     const [username,setUsername] = useState("");
     const [password,setPassword] = useState("")
+    const typ = useSelector((state)=>state.auth.type)
+    const status = useSelector((state)=>state.auth.isLoggedIn)
+    
+    useEffect(()=>{
+      if(status)
+      {
+        if(typ=='admin')
+        {
+          navigate('/admin')
+        }
+        else
+        {
+          navigate('/')
+        }
+      }
+    },[status])
+    
 
     const handlesubmit = (e)=>{
         // const queryParams = `?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
@@ -22,6 +43,8 @@ function Login() {
                 'Logged In Successfully!',
                 'success'
               )
+                dispatch(login(res.data[0]))
+                navigate('/')
             }
             else
             {
@@ -35,8 +58,15 @@ function Login() {
             console.error(error)
         })
     }
+
+    // if(status)
+    //   {
+    //     navigate('/');
+    //     // return null;
+    //   }
   return (
     <div className='h-[70vh] pt-10'>
+      
       <div className='m-10 shadow-black shadow-sm flex '>
         <form action="post" className='w-full'>
             <div className='m-3'>

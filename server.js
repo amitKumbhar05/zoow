@@ -3,10 +3,31 @@ import express, { json } from 'express'
 import cors from 'cors'
 import multer from "multer";
 import path from 'path'
+import session from "express-session";
+import cookieParser from "cookie-parser";
+import bcrypt from 'bcrypt'
+
 
 const app = express()
-app.use(express.json())
-app.use(cors())
+app.use(cookieParser())
+app.use(express.urlencoded({extended:true}))
+app.use(express.json());
+app.use(cors({
+  origin:["http://localhost:5173"],
+  methods:['GET','POST'],
+  credentials:true
+}))
+
+app.use(session({
+  key:'user',
+  secret:'amit123',
+  resave:false,
+  saveUninitialized:false,
+  cookie:{
+      maxAge:60 * 60 * 24,
+  }
+}))
+
 
 const db = createConnection({
     host:'localhost',
@@ -49,14 +70,15 @@ const upload = multer({
 
 app.post('/login',(req,res)=>{
     const {username,password} = req.body
+    
     db.query('SELECT * FROM users WHERE username = ? AND password = ?', [username, password], (error, result) => {
         if (error) {
-          console.error('Database error:', error);
-          res.send('Internal server error');
+          res.status(500).send('Internal server error');
         } 
         else {
           if (result.length > 0) {
-            res.json(result);
+            req.session.user = result
+            res.json(req.session.user);
           } 
           else {
             res.send('User not found');
@@ -66,6 +88,38 @@ app.post('/login',(req,res)=>{
     
 })
 
+app.get('/logout',(req,res)=>{
+  try {
+    req.session.destroy((err)=>{
+      if(err)
+      {
+        res.status(500).send('Error')
+      }
+      else
+      {
+        res.send("ok")
+      }
+    })
+  } catch (error) {
+    res.status(500).send('Internal Server Error')
+  }
+})
+
+app.get('/curuser',(req,res)=>{
+  try {
+    if(req.session.user)
+    {
+        res.send(req.session.user)
+    }
+    else
+    {
+      res.send("not found")
+    }
+  } catch (error) {
+    res.status(500).send('Internal Server Error')
+  }
+  
+})
 
 
 
