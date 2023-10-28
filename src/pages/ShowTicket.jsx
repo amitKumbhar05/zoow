@@ -1,53 +1,30 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
+import { BiRupee } from 'react-icons/bi'
 import Swal from 'sweetalert2'
 
 
-function Users() {
 
+const ShowTicket = () => {
     const [data, setData] = useState([])
+    let tl = 0;
 
-    const handleEmailClick = (id)=>{
-        axios.post('http://localhost:4000/delete',{id})
-        .then((res)=>{
-            if(res.data=='deleted')
-            {
-                Swal.fire(
-                    'Success',
-                    'User Deleted Successfully!',
-                    'success'
-                )
-            }
-            else
-            {
-                Swal.fire(
-                    'Error',
-                    'User Not Deleted!',
-                    'error'
-                )
-            }
-        })
-        .catch((err)=>{
-            console.error('fetch error',err);
-            Swal.fire(
-                'Error',
-                'User Not Deleted!',
-                'error'
-            )
-        })
+    const fn = ()=>{
+        data.map((row)=>(tl+=row.total))
+
     }
+    
 
     useEffect(() => {
-        axios.get('http://localhost:4000/users')
+        axios.get('http://localhost:4000/buy')
             .then((res) => {
                 setData(res.data)
             })
-            .catch((error) => {
-                console.log("Error while inquires:", error);
+            .catch((err) => {
+                console.error('fetch error', err);
             })
     }, [])
 
-    const date = new Date()
     return (
         <div className='bg-white flex flex-col m-10 w-full  h-screen'>
             <h1 className='font-bold text-xl text-gray-600'>List Of Users</h1>
@@ -57,19 +34,19 @@ function Users() {
                     <thead className="bg-gray-100">
                         <tr>
                             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                First Name
-                            </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Last Name
+                                Date Added
                             </th>
                             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Username
                             </th>
                             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Date Added
+                                Adult
                             </th>
-                            <th scope="col" className="relative px-6 py-3">
-                                <span className="sr-only">Edit</span>
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Child
+                            </th>
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Total
                             </th>
                         </tr>
                     </thead>
@@ -77,25 +54,40 @@ function Users() {
                         {data.map((row) => (
                             <tr key={row.id}>
                                 <td className="px-6 py-4 whitespace-nowrap border border-gray-300">
-                                    {row.first_name}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap border border-gray-300">
-                                    {row.last_name}
+                                    {row.date_only}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap border border-gray-300">
                                     {row.username}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap border border-gray-300">
-                                    {row.date_only}
+                                    {row.adult}
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap border border-gray-300">
+                                    {row.child}
                                 </td>
                                 <td className="px-3 py-4 whitespace-nowrap text-center text-sm font-medium border border-gray-300">
-                                    <p onClick={()=>handleEmailClick(row.id)} className="text-red-600 hover:text-indigo-900 cursor-pointer">
-                                        Delete</p>
+                                    {`₹ ${row.total}`}
                                 </td>
                             </tr>
-
                         ))}
-                        {/* {console.log(data)} */}
+                        <tr>
+                                <td className="px-6 py-4 whitespace-nowrap border border-gray-300">
+                                    Total
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap border border-gray-300">
+                                    
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap border border-gray-300">
+                                    
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap border border-gray-300">
+                                    
+                                </td>
+                                <td className="px-3 py-4 whitespace-nowrap text-center text-sm font-medium border border-gray-300">
+                                    {fn()}
+                                    {`₹ ${tl}`}
+                                </td>
+                            </tr>
 
                     </tbody>
                 </table>
@@ -105,4 +97,4 @@ function Users() {
     )
 }
 
-export default Users
+export default ShowTicket

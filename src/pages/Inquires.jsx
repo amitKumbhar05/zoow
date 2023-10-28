@@ -4,7 +4,14 @@ import React, { useEffect, useState } from 'react'
 
 
 function Inquires() {
+
     const [data,setData] = useState([])
+
+    const handleEmailClick = (emailAddress) => {
+        const emailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=${emailAddress}`;
+        window.open(emailLink, '_blank');
+      };
+
     useEffect(()=>{
         axios.get('http://localhost:4000/inquires')
         .then((res)=>{
@@ -59,9 +66,8 @@ function Inquires() {
                                 </td>
                                 
                                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium border border-gray-300">
-                                    <a href="#" className="text-indigo-600 hover:text-indigo-900">
-                                        Edit
-                                    </a>
+                                    <p onClick={()=>handleEmailClick(row.email)} className="text-indigo-600 hover:text-indigo-900 cursor-pointer">
+                                        Reply</p>
                                 </td>
                             </tr>
 

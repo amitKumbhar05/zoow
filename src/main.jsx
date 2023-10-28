@@ -3,7 +3,12 @@ import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import { Home, ContactUs, AboutUs, Login, Animals, Admin,Inquires, Users, AnimalList, Addanimal, Animalinfo } from './pages/'
+import {
+  Home, ContactUs, AboutUs, Login, Animals,
+  Admin, Inquires, Users, AnimalList, Addanimal,
+  Animalinfo, Signup, BuyTicket, ChangePrice, ShowTicket,
+  Dash
+} from './pages/'
 import { Provider } from 'react-redux'
 import store from './store/Store.jsx'
 
@@ -33,31 +38,51 @@ const router = createBrowserRouter([
         element: <Animals />
       },
       {
-        path:'/animalinfo/:id',
-        element:<Animalinfo/>
-      }
+        path: '/animalinfo/:id',
+        element: <Animalinfo />
+      },
+      {
+        path: '/signup',
+        element: <Signup />
+      },
+      {
+        path: '/buy',
+        element: <BuyTicket />
+      },
     ]
   },
   {
     path: '/admin',
     element: <Admin />,
-    children:[
+    children: [
       {
-        path:'/admin/inquires',
-        element:<Inquires/>
+        path: '/admin',
+        element: <Dash />
       },
       {
-        path:'/admin/users',
-        element:<Users/>
+        path: '/admin/inquires',
+        element: <Inquires />
       },
       {
-        path:'/admin/animallist',
-        element:<AnimalList/>,
+        path: '/admin/users',
+        element: <Users />
       },
       {
-        path:'/admin/addanimal',
-        element:<Addanimal/>
-      }
+        path: '/admin/animallist',
+        element: <AnimalList />,
+      },
+      {
+        path: '/admin/addanimal',
+        element: <Addanimal />
+      },
+      {
+        path: '/admin/chprice',
+        element: <ChangePrice />
+      },
+      {
+        path: '/admin/showticket',
+        element: <ShowTicket />
+      },
     ]
   }])
 

@@ -9,7 +9,13 @@ axios.defaults.withCredentials=true
 
 export default function App() {
   const dispatch = useDispatch()
-  console.log(useSelector(state=>state.auth.type));
+
+  const ad = localStorage.getItem('adult')
+  const ch = localStorage.getItem('child')
+  
+  if(!ad) localStorage.setItem('adult',useSelector(state=>state.price.adult))
+  if(!ch) localStorage.setItem('child',useSelector(state=>state.price.child))
+
   useEffect(()=>{
     axios.get('http://localhost:4000/curuser')
     .then((res)=>{

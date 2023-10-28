@@ -28,6 +28,7 @@ function Navbar() {
           <li className='font-bold'><Link to='/animals'>ANIMALS</Link></li>
           <li className='font-bold'><Link to='/contact'>CONTACT</Link></li>
           <li className='font-bold'><Link to='/about'>About Us</Link></li>
+          <li className='font-bold bg-purple-500 text-gray-900 p-2 rounded-xl'><Link to='/buy'>Buy Tickets</Link></li>
           {islog? (
             <button onClick={logouthandle} className="bg-red-700 text-white font-bold mr-3 p-2 rounded-lg">Log Out</button>
           ):(
