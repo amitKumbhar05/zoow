@@ -5,7 +5,7 @@ import {GiElephant} from 'react-icons/gi'
 import {FiUsers} from 'react-icons/fi'
 import {AiOutlineQuestionCircle} from 'react-icons/ai'
 import {IoTicketSharp} from'react-icons/io5'
-
+import {IoIosPricetag} from 'react-icons/io'
 
 function Sidebar() {
     return (
@@ -38,6 +38,11 @@ function Sidebar() {
                             <Link to='/admin/showticket' className="flex items-center p-3 text-gray-300 hover:bg-gray-800 hover:text-white"><IoTicketSharp className='mr-2'/>
 
                                 Inquires</Link>
+                        </li>
+                        <li>
+                            <Link to='/admin/chprice' className="flex items-center p-3 text-gray-300 hover:bg-gray-800 hover:text-white"><IoIosPricetag className='mr-2'/>
+
+                                Prices</Link>
                         </li>
                     </ul>
                 </div>
